@@ -59,8 +59,9 @@ public class Driver1 {
                     }
                     if (!isStudentExists) {
                         // Mengonversi angkatan dari String ke int
+                        int angkatan = Integer.parseInt(tokens[3]);
                         // Membuat objek Student baru
-                        students[studentCount] = new Student(tokens[1], tokens[2], tokens[3], tokens[4]);
+                        students[studentCount] = new Student(tokens[1], tokens[2], angkatan, tokens[4]);
                         studentCount++;
                     }
 

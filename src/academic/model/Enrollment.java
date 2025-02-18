@@ -4,67 +4,48 @@ package academic.model;
  * 12S23042 Pretty Purba
  * 12S23049 Clarissa Manurung
  */
+
 public class Enrollment {
+    private String id;
+    private String codeCourse;
+    private String academicYear;
+    private String semester;
+    private String grade;
 
-    private String studentId; // Menggunakan 'studentId' untuk konsistensi
-    private String courseId; // Menggunakan 'courseId' untuk konsistensi
-    private String academicYear; // Menggunakan 'academicYear' untuk konsistensi
-    private String status; // Status pendaftaran
-    private String additional; // Tambahan (jika ada)
-
-    // Constructor
-    public Enrollment(String studentId, String courseId, String academicYear, String status) {
-        this.studentId = studentId;
-        this.courseId = courseId;
+    public Enrollment(String id, String codeCourse, String academicYear, String semester){
+        this.id = id;
+        this.codeCourse = codeCourse;
         this.academicYear = academicYear;
-        this.status = status;
-        this.additional = "None"; // Default value for additional
+        this.semester = semester;
+        this.grade = "None";    
+
     }
 
-    // Accessor (getter methods)
-    public String getStudentId() {
-        return studentId; // Mengembalikan ID mahasiswa
+
+    public String getId(){
+        return this.id;
     }
 
-    public String getCourseId() {
-        return courseId; // Mengembalikan ID kursus
+    public String getCodeCourse(){
+        return this.codeCourse;
     }
 
-    public String getAcademicYear() {
-        return academicYear; // Mengembalikan tahun ajaran
+    public String getAcademicYear(){
+        return this.academicYear;
     }
 
-    public String getStatus() {
-        return status; // Mengembalikan status
+    public String getSemester(){
+        return this.semester;
     }
 
-    public String getAdditional() {
-        return additional; // Mengembalikan tambahan
+    public String getGrade(){
+        return this.grade;
     }
 
-    // Mutator (setter methods)
-    public void setStudentId(String studentId) {
-        this.studentId = studentId; // Mengatur ID mahasiswa
+    public void showEnrollment(){
+        System.out.println(getId() + "|" + getCodeCourse() + "|" + getAcademicYear() + "|" + getSemester() + "|" + getGrade());
     }
 
-    public void setCourseId(String courseId) {
-        this.courseId = courseId; // Mengatur ID kursus
-    }
 
-    public void setAcademicYear(String academicYear) {
-        this.academicYear = academicYear; // Mengatur tahun ajaran
-    }
 
-    public void setStatus(String status) {
-        this.status = status; // Mengatur status
-    }
-
-    public void setAdditional(String additional) {
-        this.additional = additional; // Mengatur tambahan
-    }
-
-    // Method to display enrollment information
-    public void showEnrollment() {
-        System.out.println(studentId + "|" + courseId + "|" + academicYear + "|" + status + "|" + additional);
-    }
 }

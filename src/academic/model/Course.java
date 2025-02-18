@@ -4,56 +4,37 @@ package academic.model;
  * 12S23042 Pretty Purba
  * 12S23049 Clarissa Manurung
  */
+
 public class Course {
-    private String idCourse; // ID kursus
-    private String courseName; // Nama kursus
-    private int sks; // SKS (Satuan Kredit Semester)
-    private String grade; // Nilai atau grade
 
-    // Constructor
-    public Course(String idCourse, String courseName, int sks, String grade) {
+    private String idCourse;
+    private String major;
+    private int semester;
+    private String passingGrade;
+
+    public Course (String idCourse, String major, int semester, String passingGrade) {
         this.idCourse = idCourse;
-        this.courseName = courseName;
-        this.sks = sks;
-        this.grade = grade;
+        this.major = major;
+        this.semester = semester;
+        this.passingGrade = passingGrade;
     }
 
-    // Accessor (getter methods)
     public String getIdCourse() {
-        return idCourse; // Mengembalikan ID kursus
+        return this.idCourse;
     }
 
-    public String getCourseName() {
-        return courseName; // Mengembalikan nama kursus
+    public String getMajor() {
+        return this.major;
     }
 
-    public int getSks() {
-        return sks; // Mengembalikan SKS
+    public int getSemester() {
+        return this.semester;
     }
 
-    public String getGrade() {
-        return grade; // Mengembalikan nilai
+    public String getPassingGrade() {
+        return this.passingGrade;
     }
-
-    // Mutator (setter methods)
-    public void setIdCourse(String idCourse) {
-        this.idCourse = idCourse; // Mengatur ID kursus
-    }
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName; // Mengatur nama kursus
-    }
-
-    public void setSks(int sks) {
-        this.sks = sks; // Mengatur SKS
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade; // Mengatur nilai
-    }
-
-    // Method to display course information
     public void showCourse() {
-        System.out.println(idCourse + "|" + courseName + "|" + sks + "|" + grade);
-    }
+        System.out.println(getIdCourse() + "|" + getMajor() + "|" + getSemester() + "|" + getPassingGrade());
+}
 }

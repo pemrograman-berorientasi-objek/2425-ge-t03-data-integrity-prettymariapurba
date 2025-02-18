@@ -1,5 +1,7 @@
 package academic.driver;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import academic.model.Enrollment;
@@ -15,77 +17,94 @@ public class Driver1 {
 
     public static void main(String[] _args) {
 
-        Scanner in = new Scanner(System.in);
-        boolean isExit = true;
+        // Menggunakan ArrayList agar lebih fleksibel dalam menyimpan data
+        List<Student> students = new ArrayList<>();
+        List<Enrollment> enrollments = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
 
-        Student[] student = new Student[200];
-        Enrollment[] enrollment = new Enrollment[200];
-        Course[] course = new Course[200];
+        try (Scanner in = new Scanner(System.in)) {
+            boolean isExit = true;
 
-        int std = 0;
-        int crs = 0;
-        int enroll = 0;
-
-        while (isExit && in.hasNextLine()) {
-            String command = in.nextLine();
-            if (command.equals("---")) {
-                isExit = false;
-            } else {
-                String[] tok = command.split("#");
-                if (tok[0].equals("course-add")) {
-                    boolean isCourse = false;
-                    for (int i = 0; i < crs; i++) {
-                        if (tok[1].equals(course[i].getIdCourse())) {
-                            isCourse = true;
+            while (isExit && in.hasNextLine()) {
+                String command = in.nextLine().trim();
+                if (command.equals("---")) {
+                    isExit = false;
+                } else {
+                    String[] tok = command.split("#");
+                    
+                    // Pastikan input memiliki format yang benar
+                    if (tok.length < 2) continue;
+                    
+                    switch (tok[0]) {
+                        case "course-add":
+                            if (tok.length == 5) {
+                                boolean isCourseExists = false;
+                                for (Course c : courses) {
+                                    if (c.getIdCourse().equals(tok[1])) {
+                                        isCourseExists = true;
+                                        break;
+                                    }
+                                }
+                                if (!isCourseExists) {
+                                    Course newCourse = new Course(tok[1], tok[2], Integer.parseInt(tok[3]), tok[4]);
+                                    courses.add(newCourse);
+                                }
+                            }
                             break;
-                        }
-                    }
-                    if (!isCourse) {
-                        course[crs] = new Course(tok[1], tok[2], Integer.parseInt(tok[3]), tok[4]);
-                        crs++;
-                    }
 
-                } else if (tok[0].equals("student-add")) {
-                    boolean isStudent = false;
-                    for (int i = 0; i < std; i++) {
-                        if (tok[1].equals(student[i].getId())) {
-                            isStudent = true;
+                        case "student-add":
+                            if (tok.length == 5) {
+                                boolean isStudentExists = false;
+                                for (Student s : students) {
+                                    if (s.getId().equals(tok[1])) {
+                                        isStudentExists = true;
+                                        break;
+                                    }
+                                }
+                                if (!isStudentExists) {
+                                    Student newStudent = new Student(tok[1], tok[2], tok[3], tok[4]);
+                                    students.add(newStudent);
+                                }
+                            }
                             break;
-                        }
-                    }
-                    if (!isStudent) {
-                        student[std] = new Student(tok[1], tok[2], tok[3], tok[4]);
-                        std++;
 
-                    }
-                } else if (tok[0].equals("enrollment-add")) {
-                    boolean isEnrollment = false;
-                    for (int i = 0; i < enroll; i++) {
-                        if (tok[2].equals(enrollment[i].getCodeCourse())) {
-                            isEnrollment = true;
+                        case "enrollment-add":
+                            if (tok.length == 5) {
+                                boolean isEnrollmentExists = false;
+                                for (Enrollment e : enrollments) {
+                                    if (e.getCodeCourse().equals(tok[2]) && e.getId().equals(tok[1])) {
+                                        isEnrollmentExists = true;
+                                        break;
+                                    }
+                                }
+                                if (!isEnrollmentExists) {
+                                    Enrollment newEnrollment = new Enrollment(tok[1], tok[2], tok[3], tok[4]);
+                                    enrollments.add(newEnrollment);
+                                }
+                            }
                             break;
-                        }
-                    }
-                    if (!isEnrollment) {
-                        enrollment[enroll] = new Enrollment(tok[1], tok[2], tok[3], tok[4]);
-                        enroll++;
+
+                        default:
+                            System.out.println("Unknown command: " + tok[0]);
+                            break;
                     }
                 }
-
             }
         }
-        for (int i = crs - 1; i >= 0; i--) {
-            course[i].showCourse();
-        }
-        for (int i = 0; i < std; i++) {
-            student[i].showStudent();
 
-        }
-        for (int i = 0; i < enroll; i++) {
-            enrollment[i].showEnrollment();
+        // Output course secara terbalik
+        for (int i = courses.size() - 1; i >= 0; i--) {
+            courses.get(i).showCourse();
         }
 
-        in.close();
+        // Output student
+        for (Student s : students) {
+            s.showStudent();
+        }
 
+        // Output enrollment
+        for (Enrollment e : enrollments) {
+            e.showEnrollment();
+        }
     }
 }

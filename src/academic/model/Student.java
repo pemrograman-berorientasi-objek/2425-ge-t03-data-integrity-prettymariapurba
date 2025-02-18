@@ -6,42 +6,55 @@ package academic.model;
  */
 public class Student {
 
-    private String nim;
-    private String nama;
-    private int angkatan;
-    private String prodi;
-    public Student(String nim, String nama, int angkatan, String prodi){
-        this.nim = nim;
-        this.nama = nama;
-        this.angkatan = angkatan;
-        this.prodi = prodi;
+    private String id; // Menggunakan 'id' untuk konsistensi
+    private String name; // Menggunakan 'name' untuk konsistensi
+    private int year; // Menggunakan 'year' untuk konsistensi
+    private String program; // Menggunakan 'program' untuk konsistensi
+
+    // Constructor
+    public Student(String id, String name, int year, String program) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+        this.program = program;
     }
 
-    public String getnim(){
-        return nim;
-    }
-    public String getnama(){
-        return nama;
-    }
-    public int getangkatan(){
-        return angkatan;
-    }
-    public String getprodi(){
-        return prodi;
+    // Accessor (getter methods)
+    public String getId() {
+        return id; // Mengembalikan ID mahasiswa
     }
 
-    public void setnim(String nim){
-        this.nim = nim;
+    public String getName() {
+        return name; // Mengembalikan nama mahasiswa
     }
-    public void setnama(String nama){
-        this.nama = nama;
+
+    public int getYear() {
+        return year; // Mengembalikan tahun angkatan
     }
-    public void setangkatan(int angkatan){
-        this.angkatan = angkatan;
+
+    public String getProgram() {
+        return program; // Mengembalikan program studi
     }
-    public void setprodi(String prodi){
-        this.prodi = prodi;
+
+    // Mutator (setter methods)
+    public void setId(String id) {
+        this.id = id; // Mengatur ID mahasiswa
     }
-    
- 
- }
+
+    public void setName(String name) {
+        this.name = name; // Mengatur nama mahasiswa
+    }
+
+    public void setYear(int year) {
+        this.year = year; // Mengatur tahun angkatan
+    }
+
+    public void setProgram(String program) {
+        this.program = program; // Mengatur program studi
+    }
+
+    // Method to display student information
+    public void showStudent() {
+        System.out.println(id + "|" + name + "|" + year + "|" + program);
+    }
+}

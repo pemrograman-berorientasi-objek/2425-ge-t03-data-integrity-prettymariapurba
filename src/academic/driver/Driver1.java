@@ -1,92 +1,101 @@
 package academic.driver;
-import java.util.*;
+
+import java.util.Scanner;
+import academic.model.Enrollment;
+import academic.model.Student;
+import academic.model.Course;
 
 /**
- * 12S23042 Pretty Purba
- * 12S23049 Clarissa Manurung
+    * 12S23042 Pretty Purba
+    * 12S23049 Clarissa Manurung
  */
+
 public class Driver1 {
 
     public static void main(String[] _args) {
-        try (Scanner input = new Scanner(System.in)) {
-            String str;
-            List<String> courses = new ArrayList<>();
-            List<String> students = new ArrayList<>();
-            List<String> enrolList = new ArrayList<>();
-            
-            while (input.hasNextLine()) {
-                str = input.nextLine();
-                String[] tokens = str.split("#");
-                
+        Scanner in = new Scanner(System.in);
+        boolean isExit = true;
+
+        Student[] students = new Student[200];
+        Enrollment[] enrollments = new Enrollment[200];
+        Course[] courses = new Course[200];
+
+        int stdCount = 0;
+        int crsCount = 0;
+        int enrollCount = 0;
+
+        while (isExit && in.hasNextLine()) {
+            String command = in.nextLine();
+            if (command.equals("---")) {
+                isExit = false;
+            } else {
+                String[] tokens = command.split("#");
                 if (tokens[0].equals("course-add")) {
-                    String course = String.join("|", Arrays.copyOfRange(tokens, 1, tokens.length));
-                    // Menambahkan kursus dengan cara terurut
-                    addCourseInOrder(courses, course);
+                    boolean isCourseExists = false;
+                    for (int i = 0; i < crsCount; i++) {
+                        if (tokens[1].equals(courses[i].getIdCourse())) {
+                            isCourseExists = true;
+                            break;
+                        }
+                    }
+                    if (!isCourseExists) {
+                        courses[crsCount] = new Course(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4]);
+                        crsCount++;
+                    }
+
                 } else if (tokens[0].equals("student-add")) {
-                    students.add(String.join("|", Arrays.copyOfRange(tokens, 1, tokens.length)));
+                    boolean isStudentExists = false;
+                    for (int i = 0; i < stdCount; i++) {
+                        if (tokens[1].equals(students[i].getId())) {
+                            isStudentExists = true;
+                            break;
+                        }
+                    }
+                    if (!isStudentExists) {
+                        students[stdCount] = new Student(tokens[1], tokens[2], tokens[3], tokens[4]);
+                        stdCount++;
+                    }
+
                 } else if (tokens[0].equals("enrollment-add")) {
-                    String courseCode = tokens[1];
-                    String studentId = tokens[2];
-                    String semester = tokens[3];
-                    String type = tokens[4];
-
-                    // Validasi kursus dan siswa
-                    if (!isValidCourse(courses, courseCode)) {
-                        System.out.println("invalid course|" + courseCode);
-                    } else if (!isValidStudent(students, studentId)) {
-                        System.out.println("invalid student|" + studentId);
+                    boolean isCourseValid = false;
+                    for (int i = 0; i < crsCount; i++) {
+                        if (tokens[2].equals(courses[i].getIdCourse())) {
+                            isCourseValid = true;
+                            break;
+                        }
+                    }
+                    boolean isStudentValid = false;
+                    for (int i = 0; i < stdCount; i++) {
+                        if (tokens[1].equals(students[i].getId())) {
+                            isStudentValid = true;
+                            break;
+                        }
+                    }
+                    if (!isCourseValid) {
+                        System.out.println("invalid course|" + tokens[2]);
+                    } else if (!isStudentValid) {
+                        System.out.println("invalid student|" + tokens[1]);
                     } else {
-                        enrolList.add(String.join("|", Arrays.copyOfRange(tokens, 1, tokens.length)) + "|None");
+                        enrollments[enrollCount] = new Enrollment(tokens[1], tokens[2], tokens[3], tokens[4]);
+                        enrollCount++;
                     }
                 }
-                
-                if (str.equals("---")) {
-                    // Print courses using a regular for loop
-                    for (int i = 0; i < courses.size(); i++) {
-                        System.out.println(courses.get(i));
-                    }
-                    // Print students using a regular for loop
-                    for (int i = 0; i < students.size(); i++) {
-                        System.out.println(students.get(i));
-                    }
-                    // Print enrollment list using a regular for loop
-                    for (int i = 0; i < enrolList.size(); i++) {
-                        System.out.println(enrolList.get(i));
-                    }
-                    System.exit(0);
-                }
             }
         }
-    }
 
-    // Method untuk menambahkan kursus dalam urutan
-    private static void addCourseInOrder(List<String> courses, String newCourse) {
-        String courseCode = newCourse.split("\\|")[0]; // Ambil kode kursus
-        int index = 0;
-        // Temukan posisi yang tepat untuk menambahkan kursus
-        while (index < courses.size() && courses.get(index).split("\\|")[0].compareTo(courseCode) < 0) {
-            index++;
+        // Print courses
+        for (int i = crsCount - 1; i >= 0; i--) {
+            courses[i].showCourse();
         }
-        courses.add(index, newCourse); // Tambahkan kursus pada posisi yang ditemukan
-    }
+        // Print students
+        for (int i = 0; i < stdCount; i++) {
+            students[i].showStudent();
+        }
+        // Print enrollments
+        for (int i = 0; i < enrollCount; i++) {
+            enrollments[i].showEnrollment();
+        }
 
-    // Method untuk memvalidasi kursus
-    private static boolean isValidCourse(List<String> courses, String courseCode) {
-        for (String course : courses) {
-            if (course.split("\\|")[0].equals(courseCode)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Method untuk memvalidasi siswa
-    private static boolean isValidStudent(List<String> students, String studentId) {
-        for (String student : students) {
-            if (student.split("\\|")[0].equals(studentId)) {
-                return true;
-            }
-        }
-        return false;
+        in.close();
     }
 }
